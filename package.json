@@ -5,6 +5,8 @@
   "scripts": {
     "start": "node ./bin/www"
   },
+  "author": "Marcelo Cavalcanti",
+  "license": "ISC",
   "dependencies": {
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
