@@ -6,6 +6,7 @@ var User = require('../models/user');
 
 var passport = require('passport');
 var authenticate = require('../authenticate');
+const cors = require('./cors');
 
 router.use(bodyParser.json());
 
@@ -13,7 +14,7 @@ router.get('/', function (req, res, next) {
   res.send('respond with a resource');
 });
 
-router.get('/', authenticate.verifyUser, authenticate.verifyAdmin, function (req, res, next) {
+router.get('/', cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, function (req, res, next) {
   User.find({}).then((users) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
@@ -21,7 +22,7 @@ router.get('/', authenticate.verifyUser, authenticate.verifyAdmin, function (req
   });
 })
 
-router.post('/signup', (req, res, next) => {
+router.post('/signup', cors.corsWithOptions, (req, res, next) => {
   User.register(new User({ username: req.body.username }),
     req.body.password, (err, user) => {
       if (err) {
@@ -51,7 +52,7 @@ router.post('/signup', (req, res, next) => {
     });
 });
 
-router.post('/login', passport.authenticate('local'), (req, res) => {
+router.post('/login', cors.corsWithOptions, passport.authenticate('local'), (req, res) => {
   var token = authenticate.getToken({ _id: req.user._id });
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
